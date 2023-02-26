@@ -54,7 +54,6 @@ class CounterAdv extends React.Component {
             this.setState({counter: +this.state.counterInput});
             this.handleViewSwitch();
         } else if ((e.key === 'Escape') || ((e.key === 'Enter') && !this.state.counterInput))
-            this.setState({counter: this.state.counter});
             this.handleViewSwitch();
     };
     handleViewSwitch = () => {
