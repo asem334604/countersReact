@@ -8,10 +8,10 @@ class Counter extends React.Component {
     }
 
     incrementCount = () => {
-        this.setState((obj) => ({counter: obj.counter + 1}));
+        this.setState((prevState) => ({counter: prevState.counter + 1}));
     };
     decrementCount = () => {
-        this.setState((obj) => ({counter: obj.counter - 1}));
+        this.setState((prevState) => ({counter: prevState.counter - 1}));
     };
 
     render() {
@@ -45,7 +45,6 @@ class CounterAdv extends React.Component {
         this.setState((prevState) => ({counter: prevState.counter - 1}));
     };
     handleInputChange = (e) => {
-        const value = e.target.value;
         this.setState({counterInput: e.target.value});
         if (!this.state.isEdit)
             this.setState({counterInput: ''});
