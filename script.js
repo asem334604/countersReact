@@ -5,23 +5,27 @@ class Counter extends React.Component {
     constructor(props) {
         super(props)
         this.state = {counter: 0};
+        this.minValue = -20;
+        this.maxValue = 20;
     }
 
     incrementCount = () => {
-        this.setState((prevState) => ({counter: prevState.counter + 1}));
+        if (this.state.counter < this.maxValue)
+            this.setState((prevState) => ({counter: prevState.counter + 1}));
     };
     decrementCount = () => {
-        this.setState((prevState) => ({counter: prevState.counter - 1}));
+        if (this.state.counter > this.minValue)
+            this.setState((prevState) => ({counter: prevState.counter - 1}));
     };
 
     render() {
         return (
             <div>
                 <h1>Counter</h1>
-                <button onClick={this.decrementCount}>-</button>
+                <button className={'decr_btn'} onClick={this.decrementCount}>-</button>
                 &nbsp;
                 <span>Count: {this.state.counter}</span>&nbsp;
-                <button onClick={this.incrementCount}>+</button>
+                <button className={'incr_btn'} onClick={this.incrementCount}>+</button>
             </div>
         );
     }
@@ -36,13 +40,17 @@ class CounterAdv extends React.Component {
             isEdit: false,
             counterInput: ''
         };
+        this.minValue = -20;
+        this.maxValue = 20;
     }
 
     incrementCount = () => {
-        this.setState((prevState) => ({counter: prevState.counter + 1}));
+        if (this.state.counter < this.maxValue)
+            this.setState((prevState) => ({counter: prevState.counter + 1}));
     };
     decrementCount = () => {
-        this.setState((prevState) => ({counter: prevState.counter - 1}));
+        if (this.state.counter > this.minValue)
+            this.setState((prevState) => ({counter: prevState.counter - 1}));
     };
     handleInputChange = (e) => {
         this.setState({counterInput: e.target.value});
@@ -50,11 +58,21 @@ class CounterAdv extends React.Component {
             this.setState({counterInput: ''});
     };
     handleFieldSubmit = (e) => {
-        if ((e.key === 'Enter') && this.state.counterInput) {
+        if ((e.key === 'Enter') &&
+            !(this.state.counterInput > this.maxValue) &&
+            !(this.state.counterInput < this.minValue)) {
             this.setState({counter: +this.state.counterInput});
             this.handleViewSwitch();
         } else if ((e.key === 'Escape') || ((e.key === 'Enter') && !this.state.counterInput))
             this.handleViewSwitch();
+        else if (this.state.counterInput > this.maxValue) {
+            alert(`maximum value is ${this.maxValue}`);
+            e.target.value = '';
+        } else if (this.state.counterInput < this.minValue) {
+            alert(`minimum value is ${this.minValue}`);
+            e.target.value = '';
+        }
+
     };
     handleViewSwitch = () => {
         this.setState((prevState) => ({isEdit: !prevState.isEdit}));
@@ -79,9 +97,11 @@ class CounterAdv extends React.Component {
             <input
                 type={'number'}
                 name={'counterInput'}
-                placeholder={`Enter new value`}
+                placeholder={`${this.state.counter}`}
                 onKeyDown={this.handleFieldSubmit}
                 onChange={this.handleInputChange}
+                max={20}
+                min={-20}
             ></input>
         </div>)
     }
